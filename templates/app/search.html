@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/static/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="/static/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap-theme.min.css">
+</head>
+<body>
+<h1 class="text-center"> Github User Data </h1>
+<div class="col-lg-12">
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped tablesorter">
+            <thead>
+            <tr>
+                <th class="header"> Username <i class="icon-sort"></i></th>
+                <th class="header"> Type <i class="icon-sort"></i></th>
+                <th class="header"> Image <i class="icon-sort"></i></th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for key in data %}
+            <tr>
+                <td>{{ key.login }}</td>
+                <td>{{ key.type }}</td>
+                <td><img height="50" src="{{ key.avatar_url }}"/></td>
+            </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

@@ -8,22 +8,15 @@ import json
 def index(request):
     return HttpResponse('Hello World!')
 
+def search(request):
+    # Length validation
+    query = request.GET.get('q', '')
+
+    req = requests.get('https://api.github.com/search/users?q=%s'%(query))
+    data  = json.loads(req.content)
+    # print data
+    return render(request, 'app/search.html', {'data':data.get("items",[])})
 
 def profile(request):
-    jsonList = []
-    req = requests.get('https://api.github.com/users/m301')
-    jsonList.append(json.loads(req.content))
-    parsedData = []
-    userData = {}
-    for data in jsonList:
-        userData['name'] = data['name']
-    userData['blog'] = data['blog']
-    userData['email'] = data['email']
-    userData['public_gists'] = data['public_gists']
-    userData['public_repos'] = data['public_repos']
-    userData['avatar_url'] = data['avatar_url']
-    userData['followers'] = data['followers']
-    userData['following'] = data['following']
-    parsedData.append(userData)
-    return render(request, 'app/profile.html', {'data':parsedData})
+    pass
     # return HttpResponse(parsedData)
