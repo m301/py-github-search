@@ -1,9 +1,11 @@
+import datetime
 import json
 import requests
 from django.shortcuts import render, HttpResponse
 from pymongo import MongoClient
-import datetime
-collection = MongoClient()['test']['store']
+
+db = MongoClient()['test']
+collection = db['store']
 
 
 # Create your views here.
@@ -13,15 +15,19 @@ def index(request):
 
 
 def search(request):
+    # TODO : to handle timeout exception
     # Length validation
     query = request.GET.get('q', '')
     sort = request.GET.get('sort', '')
     order = request.GET.get('order', 'desc')
-    url = 'https://api.github.com/search/users?q=%s' % (query)
+    endpoint = 'search/users?q=%s' % (query)
     if bool(sort):
-        url = url + ('&sort=%s&order=%s' % (sort, order))
-    req = requests.get(url)
+        endpoint = endpoint + ('&sort=%s&order=%s' % (sort, order))
+    req = requests.get('https://api.github.com/'+endpoint)
     data = json.loads(req.content)
+
+    # insert hits to database. if request is successful
+    db['hits'].insert({'time': datetime.datetime.utcnow(),'endpoint':endpoint})
 
     for item in data.get("items", []):
         record = {}
