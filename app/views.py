@@ -8,8 +8,6 @@ import json
 def index(request):
     return HttpResponse('Hello World!')
 
-def test(request):
-    return HttpResponse('My second view!')
 
 def profile(request):
     jsonList = []
@@ -27,5 +25,5 @@ def profile(request):
     userData['followers'] = data['followers']
     userData['following'] = data['following']
     parsedData.append(userData)
-    return render(request, 'app/profile.html', {})
+    return render(request, 'app/profile.html', {'data':parsedData})
     # return HttpResponse(parsedData)
