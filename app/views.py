@@ -11,10 +11,14 @@ def index(request):
 def search(request):
     # Length validation
     query = request.GET.get('q', '')
-
-    req = requests.get('https://api.github.com/search/users?q=%s'%(query))
+    sort = request.GET.get('sort', '')
+    order = request.GET.get('order', 'desc')
+    url = 'https://api.github.com/search/users?q=%s'%(query)
+    if bool(sort):
+        url = url +('&sort=%s&order=%s'%(sort,order))
+    req = requests.get(url)
     data  = json.loads(req.content)
-    # print data
+
     return render(request, 'app/search.html', {'data':data.get("items",[])})
 
 def profile(request):
